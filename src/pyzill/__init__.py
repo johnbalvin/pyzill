@@ -1,4 +1,2 @@
-from pyzill.search import Search_all
-from pyzill.search import Search_first_page
-from pyzill.details import Get_from_property_url
-from pyzill.details import Get_from_property_id
+from pyzill.details import Get_from_property_id, Get_from_property_url
+from pyzill.search import Search_all, Search_first_page
