@@ -1,7 +1,6 @@
 from typing import Any, List
 
-from pyzill.utils import prepare_session
-
+from requests import put # type: ignore
 
 def Search_all(
     ne_lat: float,
@@ -145,12 +144,12 @@ def search(
         "requestId": 10,
         "isDebugRequest": False,
     }
-    session = prepare_session(request_headers=headers)
+
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
-    response = session.request(
-        method="PUT",
+    response = put(
         url="https://www.zillow.com/async-create-search-page-state",
         json=inputData,
+        headers=headers,
         proxies=proxies,
     )
     data = response.json()

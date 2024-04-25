@@ -1,7 +1,8 @@
 from typing import Any
 
+from requests import get # type: ignore
+
 from pyzill.parse import parse_body_details_wrapper
-from pyzill.utils import prepare_session
 
 
 def Get_from_property_url(
@@ -62,9 +63,8 @@ def get_from_url(property_url: str, proxy_url: str | None = None) -> dict[str, A
         "Upgrade-Insecure-Requests": "1",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
-    session = prepare_session(request_headers=headers)
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
-    response = session.request(method="GET", url=property_url, proxies=proxies)
+    response = get(url=property_url, headers=headers, proxies=proxies)
     response.raise_for_status()
     data = parse_body_details_wrapper(response.content)
     return data
