@@ -24,8 +24,8 @@ ne_long = -122.15539952490977
 sw_lat = 47.67128302452179
 sw_long =-122.3442270395582
 zoom_value = 2
-#pagination is for the list that you see at the right when searching it's not required
-#you iterate over all the pages because zillow sends the whole data on the mapresults at once on the first page
+#pagination is for the list that you see at the right when searching
+#you don't need to iterate over all the pages because zillow sends the whole data on mapresults at once on the first page
 #however the maximum result zillow returns is 500, so if mapResults is 500
 #try playing with the zoom or moving the coordinates, pagination won't help because you will always get at maximum 500 results
 pagination = 1 
