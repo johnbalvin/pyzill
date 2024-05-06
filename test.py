@@ -3,48 +3,44 @@ import json
 
 
 def test1():
-    property_id=2056016566
-    data = pyzill.Get_from_property_id(property_id,"")
+  #  property_id=2058520213
+    
+    property_id=75828885
+    data = pyzill.get_from_property_id(property_id,"")
+    jsondata = json.dumps(data)
+    f = open("./details.json", "w")
+    f.write(jsondata)
+    f.close()
+
+test1()
+
+def test2():
+    property_url="https://www.zillow.com/apartments/rexburg-id/the-grove-at-thomson-farms/BfhwSZ/"   
+    data = pyzill.get_from_property_url(property_url,"")
     jsondata = json.dumps(data)
     f = open("./details.json", "w")
     f.write(jsondata)
     f.close()
 
 
-def test2():
+def test3():
     ne_lat = 47.76725314073866
     ne_long = -122.15539952490977
     sw_lat = 47.67128302452179
     sw_long =-122.3442270395582
     zoom_value = 2
-    results = pyzill.Search_all(ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
-    jsondata = json.dumps(results)
-    f = open("./search.json", "w")
-    f.write(jsondata)
+    results_sold = pyzill.sold(1, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+    results_sale = pyzill.for_sale(1, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+    results_rent = pyzill.for_rent(1, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+    jsondata_sold = json.dumps(results_sold)
+    jsondata_sale = json.dumps(results_sale)
+    jsondata_rent = json.dumps(results_rent)
+    f = open("./jsondata_sold.json", "w")
+    f.write(jsondata_sold)
     f.close()
-
-def test2():
-    ne_lat = 47.76725314073866
-    ne_long = -122.15539952490977
-    sw_lat = 47.67128302452179
-    sw_long =-122.3442270395582
-    zoom_value = 2
-    results = pyzill.Search_all(ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
-    details_data = []
-    progress = 1
-    jsondata = json.dumps(results)
-    f = open("results.json", "w")
-    f.write(jsondata)
+    f = open("./jsondata_sale.json", "w")
+    f.write(jsondata_sale)
     f.close()
-    for result in results[:3]:
-        data = pyzill.Get_from_property_id(result["zpid"],"")
-        details_data.append(data)
-        print("len results: ",progress, len(results))
-        progress=progress+1
-        
-    details_data_json = json.dumps(details_data)
-    f = open("details_data.json", "w")
-    f.write(details_data_json)
+    f = open("./jsondata_rent.json", "w")
+    f.write(jsondata_rent)
     f.close()
-
-test2()

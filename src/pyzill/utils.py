@@ -26,24 +26,3 @@ def get_nested_value(dic, key_path, default=None):
             return default
     return current
 
-
-def parse_price_symbol(price_raw: str) -> Tuple[float, str]:
-    """Takes price string and parses price as integer and currency symbol
-
-    Args:
-        price_raw (str): Eg "$ 56"
-
-    Returns:
-        Tuple[float, str]: Eg (56, "$")
-    """
-
-    extracted_price, currency = 0.0, ""
-    price_raw = price_raw.replace(",", "")
-    price_number_match = regx_price.search(price_raw)
-    if price_number_match:
-        price_number = price_number_match.group(0)
-        currency = price_raw.replace(price_number, "").replace(" ", "").replace("-", "")
-        extracted_price = float(price_number)
-        if price_raw.startswith("-"):
-            extracted_price *= -1
-    return extracted_price, currency

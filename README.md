@@ -24,22 +24,25 @@ ne_long = -122.15539952490977
 sw_lat = 47.67128302452179
 sw_long =-122.3442270395582
 zoom_value = 2
-results = pyzill.Search_all(ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
-details_data = []
-progress = 1
-jsondata = json.dumps(results)
-f = open("results.json", "w")
-f.write(jsondata)
+#pagination is for the list that you see at the right when searching it's not required
+#you iterate over all the pages because zillow sends the whole data on the mapresults at once on the first page
+#however the maximum result zillow returns is 500, so if mapResults is 500
+#try playing with the zoom or moving the coordinates, pagination won't help because you will always get at maximum 500 results
+pagination = 1 
+results_sold = pyzill.sold(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+results_sale = pyzill.for_sale(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+results_rent = pyzill.for_rent(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+jsondata_sold = json.dumps(results_sold)
+jsondata_sale = json.dumps(results_sale)
+jsondata_rent = json.dumps(results_rent)
+f = open("./jsondata_sold.json", "w")
+f.write(jsondata_sold)
 f.close()
-for result in results[:3]:
-    data = pyzill.Get_from_property_id(result["zpid"],"")
-    details_data.append(data)
-    print("len results: ",progress, len(results))
-    progress=progress+1
-    
-details_data_json = json.dumps(details_data)
-f = open("details_data.json", "w")
-f.write(details_data_json)
+f = open("./jsondata_sale.json", "w")
+f.write(jsondata_sale)
+f.close()
+f = open("./jsondata_rent.json", "w")
+f.write(jsondata_rent)
 f.close()
 ```
 

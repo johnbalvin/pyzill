@@ -4,7 +4,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup  # type: ignore
 
-from pyzill.utils import remove_space
+from pyzill.utils import remove_space,get_nested_value
 
 
 def parse_body_details_wrapper(body: bytes) -> dict[str, Any]:
@@ -23,12 +23,7 @@ def parse_body_details_wrapper(body: bytes) -> dict[str, Any]:
         htmlData = soup.select("#__NEXT_DATA__")[0].getText()
         htmlData = remove_space(unescape(htmlData))
         data = loads(htmlData)
-        property_json = (
-            data.get("props", {})
-            .get("pageProps", {})
-            .get("componentProps", {})
-            .get("gdpClientCache", {})
-        )
+        property_json =get_nested_value(data,"props.pageProps.componentProps.gdpClientCache")
         property_json = loads(property_json)
         for data in property_json.values():
             if "property" in str(data):

@@ -2,48 +2,8 @@ from typing import Any, List
 
 from requests import put # type: ignore
 
-def Search_all(
-    ne_lat: float,
-    ne_long: float,
-    sw_lat: float,
-    sw_long: float,
-    zoom_value: int,
-    proxy_url: str,
-) -> List[dict[str, Any]]:
-    """Traverse through pages of a listing in in bruteforce method
-
-    Args:
-        ne_lat (float): ne latitude value
-        ne_long (float): ne longitude value
-        sw_lat (float): sw latitude value
-        sw_long (float): sw longitude value
-        zoom_value (int): zoom value in map
-        proxy_url (str | None, optional): proxy URL for masking the request. Defaults to None.
-
-    Returns:
-        List[dict[str, Any]]: list of properties in JSON format
-    """
-    all_results: List[dict[str, Any]] = []
-    pagination = 0
-    while True:
-        pagination = pagination + 1
-        results = search(
-            pagination=pagination,
-            ne_lat=ne_lat,
-            ne_long=ne_long,
-            sw_lat=sw_lat,
-            sw_long=sw_long,
-            zoom_value=zoom_value,
-            proxy_url=proxy_url,
-        )
-        print("pagination: ", pagination, "len results: ", len(results))
-        all_results.append(results)
-        if not results:
-            break
-    return all_results
-
-
-def Search_first_page(
+def for_sale(
+    pagination: int,
     ne_lat: float,
     ne_long: float,
     sw_lat: float,
@@ -51,31 +11,114 @@ def Search_first_page(
     zoom_value: int,
     proxy_url: str | None = None,
 ) -> dict[str, Any]:
-    """Get listings from first page
-
+    """get results of the listing that are for sale, you will get a dictionary with the keywords
+    mapResults and listResults, use mapResults which contains all the listings from all paginations
+    listResults is more for the right side bar that you see when searching on zillow. 
+    Be aware the the maximum size of mapResults is 500 so if you get results with size 500, so if you want 
+    to get the whole result frm a particular area, you need to play with the zoom, or the coordinates.
+    Even if you try to paginate over all results, it won't work even if you use mapResults or listResults
+    I would recomend not use pagination because you have all results(with 500 maximum) on mapResults
     Args:
+        pagination (int): number of page in pagination
         ne_lat (float): ne latitude value
         ne_long (float): ne longitude value
         sw_lat (float): sw latitude value
         sw_long (float): sw longitude value
-        zoom_value (int): zoom value in map
+        sw_long (float): sw longitude value
         proxy_url (str | None, optional): proxy URL for masking the request. Defaults to None.
 
     Returns:
         dict[str, Any]: listing of properties in JSON format
     """
-    results = search(
-        pagination=1,
-        ne_lat=ne_lat,
-        ne_long=ne_long,
-        sw_lat=sw_lat,
-        sw_long=sw_long,
-        zoom_value=zoom_value,
-        proxy_url=proxy_url,
-    )
-    return results
+    rent = {
+		"sortSelection":  {"value": "globalrelevanceex"},
+		"isAllHomes":  {"value": True},
+	}
+    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
 
+def for_rent(
+    pagination: int,
+    ne_lat: float,
+    ne_long: float,
+    sw_lat: float,
+    sw_long: float,
+    zoom_value: int,
+    proxy_url: str | None = None,
+) -> dict[str, Any]:
+    """get results of the listing that are for rent, you will get a dictionary with the keywords
+    mapResults and listResults, use mapResults which contains all the listings from all paginations
+    listResults is more for the right side bar that you see when searching on zillow. 
+    Be aware the the maximum size of mapResults is 500 so if you get results with size 500, so if you want 
+    to get the whole result frm a particular area, you need to play with the zoom, or the coordinates.
+    Even if you try to paginate over all results, it won't work even if you use mapResults or listResults
+    I would recomend not use pagination because you have all results(with 500 maximum) on mapResults
+    Args:
+        pagination (int): number of page in pagination
+        ne_lat (float): ne latitude value
+        ne_long (float): ne longitude value
+        sw_lat (float): sw latitude value
+        sw_long (float): sw longitude value
+        sw_long (float): sw longitude value
+        proxy_url (str | None, optional): proxy URL for masking the request. Defaults to None.
 
+    Returns:
+        dict[str, Any]: listing of properties in JSON format
+    """
+    rent = {
+		"sortSelection":  {"value": "priorityscore"},
+		"isNewConstruction":  {"value": False},
+		"isForSaleForeclosure":  {"value": False},
+		"isForSaleByOwner":  {"value": False},
+		"isForSaleByAgent":  {"value": False},
+		"isForRent":  {"value": True},
+		"isComingSoon":  {"value": False},
+		"isAuction":  {"value": False},
+		"isAllHomes":  {"value": True},
+	}
+    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
+
+def sold(
+    pagination: int,
+    ne_lat: float,
+    ne_long: float,
+    sw_lat: float,
+    sw_long: float,
+    zoom_value: int,
+    proxy_url: str | None = None,
+) -> dict[str, Any]:
+    """get results of the listing that were sold, you will get a dictionary with the keywords
+    mapResults and listResults, use mapResults which contains all the listings from all paginations
+    listResults is more for the right side bar that you see when searching on zillow. 
+    Be aware the the maximum size of mapResults is 500 so if you get results with size 500, so if you want 
+    to get the whole result frm a particular area, you need to play with the zoom, or the coordinates.
+    Even if you try to paginate over all results, it won't work even if you use mapResults or listResults
+    I would recomend not use pagination because you have all results(with 500 maximum) on mapResults
+    Args:
+        pagination (int): number of page in pagination
+        ne_lat (float): ne latitude value
+        ne_long (float): ne longitude value
+        sw_lat (float): sw latitude value
+        sw_long (float): sw longitude value
+        sw_long (float): sw longitude value
+        proxy_url (str | None, optional): proxy URL for masking the request. Defaults to None.
+
+    Returns:
+        dict[str, Any]: listing of properties in JSON format
+    """
+    rent = {
+		"sortSelection":  {"value": "globalrelevanceex"},
+		"isNewConstruction":  {"value": False},
+		"isForSaleForeclosure":  {"value": False},
+		"isForSaleByOwner":  {"value": False},
+		"isForSaleByAgent":  {"value": False},
+		"isForRent":  {"value": False},
+		"isComingSoon":  {"value": False},
+		"isAuction":  {"value": False},
+		"isAllHomes":  {"value": True},
+		"isRecentlySold":  {"value": True},
+	}
+    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
+    
 def search(
     pagination: int,
     ne_lat: float,
@@ -83,6 +126,7 @@ def search(
     sw_lat: float,
     sw_long: float,
     zoom_value: int,
+    filter_state: dict[str, Any],
     proxy_url: str | None = None,
 ) -> dict[str, Any]:
     """get results of the listing of the given page number
@@ -93,7 +137,8 @@ def search(
         ne_long (float): ne longitude value
         sw_lat (float): sw latitude value
         sw_long (float): sw longitude value
-        zoom_value (int): zoom value in map
+        sw_long (float): sw longitude value
+        filter_state (dict[str, Any]): input data for making the search
         proxy_url (str | None, optional): proxy URL for masking the request. Defaults to None.
 
     Returns:
@@ -117,21 +162,15 @@ def search(
     }
     inputData = {
         "searchQueryState": {
-            "isMapVisible": False,
+            "isMapVisible": True,
+            "isListVisible": True,
             "mapBounds": {
                 "north": ne_lat,
                 "east": ne_long,
                 "south": sw_lat,
                 "west": sw_long,
             },
-            "filterState": {
-                "sortSelection": {
-                    "value": "globalrelevanceex",
-                }
-            },
-            "isEntirePlaceForRent": True,
-            "isRoomForRent": True,
-            "isListVisible": True,
+            "filterState": filter_state,
             "mapZoom": zoom_value,
             "pagination": {
                 "currentPage": pagination,
@@ -153,4 +192,4 @@ def search(
         proxies=proxies,
     )
     data = response.json()
-    return data.get("cat1", {}).get("searchResults", {}).get("listResults", {})
+    return data.get("cat1", {}).get("searchResults", {})

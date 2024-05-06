@@ -5,7 +5,7 @@ from requests import get # type: ignore
 from pyzill.parse import parse_body_details_wrapper
 
 
-def Get_from_property_url(
+def get_from_property_url(
     property_url: str, proxy_url: str | None = None
 ) -> dict[str, Any]:
     """Scrape data for property based on zillow property URL
@@ -21,7 +21,7 @@ def Get_from_property_url(
     return data
 
 
-def Get_from_property_id(
+def get_from_property_id(
     property_id: int, proxy_url: str | None = None
 ) -> dict[str, Any]:
     """Scrape data for property based on property ID from zillow
