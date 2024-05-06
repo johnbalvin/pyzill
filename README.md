@@ -50,7 +50,7 @@ f.close()
 import pyzill
 import json
 property_url="https://www.zillow.com/homedetails/858-Shady-Grove-Ln-Harrah-OK-73045/339897685_zpid/"
-data = pyzill.Get_from_property_url(property_url,"")
+data = pyzill.get_from_property_url(property_url,"")
 jsondata = json.dumps(data)
 f = open("details.json", "w")
 f.write(jsondata)
@@ -61,7 +61,7 @@ f.close()
 import pyzill
 import json
 property_id=2056016566
-data = pyzill.Get_from_property_url(property_id,"")
+data = pyzill.get_from_property_id(property_id,"")
 jsondata = json.dumps(data)
 f = open("details.json", "w")
 f.write(jsondata)
