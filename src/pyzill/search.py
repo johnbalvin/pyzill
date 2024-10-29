@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from requests import put # type: ignore
+from curl_cffi import requests
 
 def for_sale(
     pagination: int,
@@ -185,11 +185,12 @@ def search(
     }
 
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
-    response = put(
+    response = requests.put(
         url="https://www.zillow.com/async-create-search-page-state",
         json=inputData,
         headers=headers,
-        proxies=proxies,
+        proxies=proxies,  
+        impersonate="chrome110",
     )
     data = response.json()
     return data.get("cat1", {}).get("searchResults", {})

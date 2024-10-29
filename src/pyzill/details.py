@@ -1,6 +1,6 @@
 from typing import Any
 
-from requests import get # type: ignore
+from curl_cffi import requests
 
 from pyzill.parse import parse_body_details_wrapper
 
@@ -53,7 +53,7 @@ def get_from_url(property_url: str, proxy_url: str | None = None) -> dict[str, A
         "Accept-Language": "en",
         "Cache-Control": "no-cache",
         "Pragma": "no-cache",
-        "Sec-Ch-Ua": '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        "Sec-Ch-Ua": '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
         "Sec-Ch-Ua-Mobile": "?0",
         "Sec-Ch-Ua-Platform": '"Windows"',
         "Sec-Fetch-Dest": "document",
@@ -61,10 +61,10 @@ def get_from_url(property_url: str, proxy_url: str | None = None) -> dict[str, A
         "Sec-Fetch-Site": "none",
         "Sec-Fetch-User": "?1",
         "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
     }
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
-    response = get(url=property_url, headers=headers, proxies=proxies)
+    response = requests.get(url=property_url, headers=headers, proxies=proxies, impersonate="chrome110")
     response.raise_for_status()
     data = parse_body_details_wrapper(response.content)
     return data

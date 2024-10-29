@@ -15,13 +15,13 @@ def test1():
 test1()
 
 def test2():
-    property_url="https://www.zillow.com/apartments/rexburg-id/the-grove-at-thomson-farms/BfhwSZ/"   
+    property_url="https://www.zillow.com/homedetails/6453-Ficus-Ln-Lake-Worth-FL-33462/2068566820_zpid/"    
     data = pyzill.get_from_property_url(property_url,"")
     jsondata = json.dumps(data)
-    f = open("./details.json", "w")
+    f = open("./details2.json", "w")
     f.write(jsondata)
     f.close()
-
+test2()
 
 def test3():
     ne_lat = 47.76725314073866
