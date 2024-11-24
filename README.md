@@ -9,6 +9,9 @@ This project is an open-source tool developed in Python for extracting product i
 - Implemented in Python just because it's popular
 - Easy to integrate with existing Python projects
 
+### Important
+- Use rotating residential proxies, zillow will block if you make multiple requests with the same IP, 
+
 ### Install
 
 ```bash
@@ -29,9 +32,10 @@ zoom_value = 2
 #however the maximum result zillow returns is 500, so if mapResults is 500
 #try playing with the zoom or moving the coordinates, pagination won't help because you will always get at maximum 500 results
 pagination = 1 
-results_sold = pyzill.sold(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
-results_sale = pyzill.for_sale(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
-results_rent = pyzill.for_rent(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, "")
+proxy_url = pyzill.parse_proxy("[proxy_ip or proxy_domain]","[proxy_port]","[proxy_username]","[proxy_password]")
+results_sold = pyzill.sold(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, proxy_url)
+results_sale = pyzill.for_sale(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, proxy_url)
+results_rent = pyzill.for_rent(pagination, ne_lat,ne_long,sw_lat,sw_long,zoom_value, proxy_url)
 jsondata_sold = json.dumps(results_sold)
 jsondata_sale = json.dumps(results_sale)
 jsondata_rent = json.dumps(results_rent)
@@ -50,7 +54,8 @@ f.close()
 import pyzill
 import json
 property_url="https://www.zillow.com/homedetails/858-Shady-Grove-Ln-Harrah-OK-73045/339897685_zpid/"
-data = pyzill.get_from_property_url(property_url,"")
+proxy_url = pyzill.parse_proxy("[proxy_ip or proxy_domain]","[proxy_port]","[proxy_username]","[proxy_password]")
+data = pyzill.get_from_property_url(property_url,proxy_url)
 jsondata = json.dumps(data)
 f = open("details.json", "w")
 f.write(jsondata)
@@ -61,7 +66,8 @@ f.close()
 import pyzill
 import json
 property_id=2056016566
-data = pyzill.get_from_property_id(property_id,"")
+proxy_url = pyzill.parse_proxy("[proxy_ip or proxy_domain]","[proxy_port]","[proxy_username]","[proxy_password]")
+data = pyzill.get_from_property_id(property_id,proxy_url)
 jsondata = json.dumps(data)
 f = open("details.json", "w")
 f.write(jsondata)

@@ -1,5 +1,5 @@
 from typing import Any, List
-
+import json
 from curl_cffi import requests
 
 def for_sale(
@@ -190,7 +190,7 @@ def search(
         json=inputData,
         headers=headers,
         proxies=proxies,  
-        impersonate="chrome110",
+        impersonate="chrome124",
     )
     data = response.json()
     return data.get("cat1", {}).get("searchResults", {})

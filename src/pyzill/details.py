@@ -64,7 +64,7 @@ def get_from_url(property_url: str, proxy_url: str | None = None) -> dict[str, A
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
     }
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
-    response = requests.get(url=property_url, headers=headers, proxies=proxies, impersonate="chrome110")
+    response = requests.get(url=property_url, headers=headers, proxies=proxies, impersonate="chrome124")
     response.raise_for_status()
     data = parse_body_details_wrapper(response.content)
     return data
