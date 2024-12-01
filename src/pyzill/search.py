@@ -1,9 +1,15 @@
 from typing import Any, List
-import json
 from curl_cffi import requests
 
 def for_sale(
     pagination: int,
+    search_value: str,
+    min_beds: int,
+    max_beds: int,
+    min_bathrooms: int,
+    max_bathrooms: int,
+    min_price: int,
+    max_price: int,
     ne_lat: float,
     ne_long: float,
     sw_lat: float,
@@ -34,10 +40,17 @@ def for_sale(
 		"sortSelection":  {"value": "globalrelevanceex"},
 		"isAllHomes":  {"value": True},
 	}
-    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
+    return search(pagination,search_value,min_beds,max_beds,min_bathrooms,max_bathrooms,min_price,max_price,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
 
 def for_rent(
     pagination: int,
+    search_value: str,
+    min_beds: int,
+    max_beds: int,
+    min_bathrooms: int,
+    max_bathrooms: int,
+    min_price: int,
+    max_price: int,
     ne_lat: float,
     ne_long: float,
     sw_lat: float,
@@ -75,10 +88,17 @@ def for_rent(
 		"isAuction":  {"value": False},
 		"isAllHomes":  {"value": True},
 	}
-    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
+    return search(pagination,search_value,min_beds,max_beds,min_bathrooms,max_bathrooms,min_price,max_price,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
 
 def sold(
     pagination: int,
+    search_value: str,
+    min_beds: int,
+    max_beds: int,
+    min_bathrooms: int,
+    max_bathrooms: int,
+    min_price: int,
+    max_price: int,
     ne_lat: float,
     ne_long: float,
     sw_lat: float,
@@ -117,10 +137,17 @@ def sold(
 		"isAllHomes":  {"value": True},
 		"isRecentlySold":  {"value": True},
 	}
-    return search(pagination,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
+    return search(pagination,search_value,min_beds,max_beds,min_bathrooms,max_bathrooms,min_price,max_price,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
     
 def search(
     pagination: int,
+    search_value: str,
+    min_beds: int,
+    max_beds: int,
+    min_bathrooms: int,
+    max_bathrooms: int,
+    min_price: int,
+    max_price: int,
     ne_lat: float,
     ne_long: float,
     sw_lat: float,
@@ -183,6 +210,32 @@ def search(
         "requestId": 10,
         "isDebugRequest": False,
     }
+    if search_value is not None:
+        inputData["searchQueryState"]["usersSearchTerm"]=search_value
+
+    if min_beds is not None or  max_beds is not None:
+        beds = {}
+        if min_beds is not None:
+            beds["min"] = min_beds
+        if max_beds is not None:
+            beds["max"] = max_beds
+        inputData["searchQueryState"]["filterState"]["beds"] = beds
+
+    if min_bathrooms is not None or  max_bathrooms is not None:
+        baths = {}
+        if min_bathrooms is not None:
+            baths["min"] = min_bathrooms
+        if max_bathrooms is not None:
+            baths["max"] = max_bathrooms
+        inputData["searchQueryState"]["filterState"]["baths"] = baths
+
+    if min_price is not None or  max_price is not None:
+        price = {}
+        if min_price is not None:
+            price["min"] = min_price
+        if max_price is not None:
+            price["max"] = max_price
+        inputData["searchQueryState"]["filterState"]["price"] = price
 
     proxies = {"http": proxy_url, "https": proxy_url} if proxy_url else None
     response = requests.put(
