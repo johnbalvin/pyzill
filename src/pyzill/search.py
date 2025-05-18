@@ -1,5 +1,7 @@
 from typing import Any, List
 from curl_cffi import requests
+import json
+
 
 def for_sale(
     pagination: int,
@@ -45,6 +47,8 @@ def for_sale(
 def for_rent(
     pagination: int,
     search_value: str,
+    is_entire_place: bool,
+    is_room: bool,
     min_beds: int,
     max_beds: int,
     min_bathrooms: int,
@@ -88,6 +92,10 @@ def for_rent(
 		"isAuction":  {"value": False},
 		"isAllHomes":  {"value": True},
 	}
+    if is_room:
+        rent["isRoomForRent"] = True
+    if not is_entire_place:    
+        rent["isEntirePlaceForRent"] = False
     return search(pagination,search_value,min_beds,max_beds,min_bathrooms,max_bathrooms,min_price,max_price,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
 
 def sold(

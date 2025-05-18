@@ -32,7 +32,7 @@ results_sale = pyzill.for_sale(pagination,
               proxy_url=proxy_url)
 
 results_rent = pyzill.for_rent(pagination, 
-              search_value="",
+              search_value="",is_entire_place=False,is_room=True,
               min_beds=1,max_beds=None,
               min_bathrooms=None,max_bathrooms=None,
               min_price=10000,max_price=None,
