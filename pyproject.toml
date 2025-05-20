@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyzill"
-version = '1.0.1'
+version = '1.0.2'
 description = 'Zillow scraper in Python'
 authors = [
   { name="John Balvin", email="johnchristian@hotmail.es" },

@@ -93,9 +93,9 @@ def for_rent(
 		"isAllHomes":  {"value": True},
 	}
     if is_room:
-        rent["isRoomForRent"] = True
+        rent["isRoomForRent"] = {"value": True}
     if not is_entire_place:    
-        rent["isEntirePlaceForRent"] = False
+        rent["isEntirePlaceForRent"] = {"value": False}
     return search(pagination,search_value,min_beds,max_beds,min_bathrooms,max_bathrooms,min_price,max_price,ne_lat,ne_long,sw_lat,sw_long,zoom_value,rent,proxy_url)
 
 def sold(
