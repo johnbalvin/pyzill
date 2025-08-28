@@ -185,6 +185,7 @@ def search(
         "Content-Type": "application/json",
         "Cache-Control": "no-cache",
         "Pragma": "no-cache",
+        "origin": "https://www.zillow.com",
         "Sec-Ch-Ua": '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
         "Sec-Ch-Ua-Mobile": "?0",
         "Sec-Ch-Ua-Platform": '"Windows"',
